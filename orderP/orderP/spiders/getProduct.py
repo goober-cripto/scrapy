@@ -6,7 +6,7 @@ import pandas as pd
 
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
-from scrapy.http import FormRequest
+from scrapy.http import Request
 
 class GetProductSpider(CrawlSpider):
     name = "getProduct"
@@ -36,11 +36,17 @@ class GetProductSpider(CrawlSpider):
 
         items = response.url.split('/')[-1]
         
-        yield FormRequest(
+        yield Request(
             url=self.ajax_url,
-            formdata={'type': 'character', 'style': 'element', 'items': items},
+            method='POST',
+            body=f'type=character&style=element&items={items}',
+            headers={'Content-Type': 'application/x-www-form-urlencoded'},
             callback=self.add_characteristic,
-            meta={'name': name, 'price': price, 'description': cleaned_description}
+            meta={
+                'name': name,
+                'price': price,
+                'description': cleaned_description
+            }
         )
 
     def add_characteristic(self, response):
