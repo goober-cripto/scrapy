@@ -15,7 +15,7 @@ class GetProductSpider(CrawlSpider):
     ajax_url = "https://order-nn.ru/local/ajax/kmo/getCharacterItems.php"
 
     rules = (
-        Rule(LinkExtractor(allow=('5974')), callback='parse_item', follow=True),
+        Rule(LinkExtractor(allow=('5974','9460','5999')), callback='parse_item', follow=True),
     )
 
     def __init__(self, **kwargs):
